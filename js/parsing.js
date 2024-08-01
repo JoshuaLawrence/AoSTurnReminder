@@ -111,7 +111,7 @@ function parseProfiles(list,xmlData,unit_idx = null,unit = null,wargear = false)
            
             list.abilities[id] = parseAbility(profile);
         }
-        if(unit_idx && unit){
+        if(unit_idx !== null && unit){
             list.abilities[id].units.push(unit_idx);
             unit.abilities.push({id,name});
         }
