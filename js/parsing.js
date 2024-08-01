@@ -26,7 +26,7 @@ function linkListData(list){
     //unit abilities
     //console.log(_data);
     list.units.forEach((unit,unit_idx)=>{
-        let _unit = _data.units.querySelector('[type="unit"][name="'+unit.unitName+'" i]');
+        let _unit = _data.units.querySelector('[type="unit"][name="'+unit.unitName+'" i] profiles');
         if(!_unit){
             let msg = "Could not find data for Unit: [" + unit.unitName + "]";
             if(!list.parseErrors)list.parseErrors = [];
@@ -35,7 +35,7 @@ function linkListData(list){
             return;
         }
         //get abilities
-       
+        //console.log(_unit)
         parseProfiles(list,_unit,unit_idx,unit);
        
         //add enhancements if unit has any
@@ -43,16 +43,23 @@ function linkListData(list){
             
             Object.keys(unit.enhancements).forEach(enhancement=>{
                 let profile = _data.rules.querySelector('profile[name="'+enhancement+'"]');
-                if(!profile)return;
-                let name = profile.attributes.name.value;
-                let id = profile.attributes.id.value;
-                if(!list.abilities[id]){
-               
-                    list.abilities[id] = parseAbility(profile);
-                    //console.log(list.abilities[id])
+                if(profile){
+                    let name = profile.attributes.name.value;
+                    let id = profile.attributes.id.value;
+                    if(!list.abilities[id]){
+                
+                        list.abilities[id] = parseAbility(profile);
+                        //console.log(list.abilities[id])
+                    }
+                    list.abilities[id].units.push(unit_idx);
+                    unit.abilities.push({id,name});
+                }else{
+                    //check for wargear options
+                    let wargearData = _data.units.querySelector('[name="'+enhancement+'"]');
+                    if(wargearData){
+                        parseProfiles(list,wargearData,unit_idx,unit);
+                    }
                 }
-                list.abilities[id].units.push(unit_idx);
-                unit.abilities.push({id,name});
             })
         }
         //console.log(unit.unitName,_data.units.querySelector('[name="'+unit.unitName+'"]'))
@@ -87,8 +94,8 @@ function linkListData(list){
 }
 
 function parseProfiles(list,xmlData,unit_idx = null,unit = null){
-    let RoRProfiles = xmlData.querySelectorAll('profile');
-    RoRProfiles.forEach(profile=>{
+    let profiles = xmlData.querySelectorAll('profile');
+    profiles.forEach(profile=>{
     
         let typeId = profile.attributes.typeId.value;
         if(PROFILE[typeId].name == "Unit"){
