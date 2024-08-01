@@ -26,7 +26,7 @@ function linkListData(list){
     //unit abilities
     //console.log(_data);
     list.units.forEach((unit,unit_idx)=>{
-        let _unit = _data.units.querySelector('[type="unit"][name="'+unit.unitName+'" i] profiles');
+        let _unit = _data.units.querySelector('[type="unit"][name="'+unit.unitName+'" i]');
         if(!_unit){
             let msg = "Could not find data for Unit: [" + unit.unitName + "]";
             if(!list.parseErrors)list.parseErrors = [];
@@ -57,7 +57,7 @@ function linkListData(list){
                     //check for wargear options
                     let wargearData = _data.units.querySelector('[name="'+enhancement+'"]');
                     if(wargearData){
-                        parseProfiles(list,wargearData,unit_idx,unit);
+                        parseProfiles(list,wargearData,unit_idx,unit,true);
                     }
                 }
             })
@@ -93,10 +93,13 @@ function linkListData(list){
    
 }
 
-function parseProfiles(list,xmlData,unit_idx = null,unit = null){
-    let profiles = xmlData.querySelectorAll('profile');
+function parseProfiles(list,xmlData,unit_idx = null,unit = null,wargear = false){
+    let query = 'profile';
+    if(!wargear) 
+        query = 'profile:not(selectionEntryGroup[name="Wargear Options"]>*>*>*>*>*>profile)';
+    let profiles = xmlData.querySelectorAll(query);
+   
     profiles.forEach(profile=>{
-    
         let typeId = profile.attributes.typeId.value;
         if(PROFILE[typeId].name == "Unit"){
             return;
