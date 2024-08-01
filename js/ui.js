@@ -75,6 +75,8 @@ function parseImportText(){
         "parseErrors":[],
         "rawInput": importListRaw
     };
+    let RoRFinished = false;
+
     let maxParseLength = importListRaw.length - 4
     for(let i = 0; i < maxParseLength; i++){
         let row = importListRaw[i];
@@ -103,13 +105,17 @@ function parseImportText(){
             importList["units"][importList["units"].length-1]["enhancements"][row.split('•')[1].trim()] = {};
         }
         //Get Regiment of Renown - at end of list - loop through remaining rows - [RoR name]=[...RoR units]
-        if(row.includes('Regiments of Renown')){
+        if(row.includes('Regiments of Renown') && !RoRFinished){
             i++;
+            RoRFound = true;
             //add to unit - do later
             let regex = /[0-9]+/
             for(i;i<maxParseLength;i++){
                 row = importListRaw[i];
-                if(row.includes("Faction Terrain"))break;
+                if(row.includes("Faction Terrain")){
+                    RoRFinished = true;
+                    break;
+                }
                 //get RoR name
                 if(regex.test(row) === true){
                     importList["regimentsOfRenown"].push({"name":row.replace(regex,"").trim(),"units":[]});
@@ -120,7 +126,9 @@ function parseImportText(){
                 
                 
             }
-            console.log(row);
+        }
+        
+        if(row.includes('Faction Terrain')){
             i++;
             //faction terrain
             for(i;i<maxParseLength;i++){
