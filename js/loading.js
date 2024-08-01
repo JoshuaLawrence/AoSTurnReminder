@@ -1,4 +1,5 @@
-
+const LOAD_DEBUG = false;
+const LOAD_VERBOSE = false;
 async function dbSetup(){
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("AoSTR_DATA");
@@ -13,7 +14,7 @@ async function dbSetup(){
         request.onupgradeneeded = (event) => {
             db = event.target.result;
         
-            const objectStore = db.createObjectStore("data", {autoIncrement: true});
+            const objectStore = db.createObjectStore("data", { keyPath: "name"});
             
             
             objectStore.createIndex("name", "name", { unique: true });
@@ -38,10 +39,21 @@ function storeResourceInDB(resource_name,data){
 
     let resource = {"name":resource_name,"DT":new Date().getTime(),"data":data};
     // Store values in the newly created objectStore.
-    const transaction = db.transaction(["data"], "readwrite");
-    const dataObjectStore = transaction.objectStore("data");
-   // console.log("Storing in DB",resource);
-    dataObjectStore.put(resource);
+    var transaction = db.transaction(["data"], "readwrite");
+    var dataObjectStore = transaction.objectStore("data");
+  
+    try{
+        //xml doc isn't serialisable so delete the record first before updating it
+        const request = dataObjectStore.delete(resource_name);
+        request.onsuccess = (event) =>{
+            const updateObjSto = db.transaction(["data"], "readwrite").objectStore("data");
+            updateObjSto.put(resource);
+        }
+    }catch(e){
+        dataObjectStore.put(resource);
+    }
+    
+    
 }
 
 
@@ -52,8 +64,7 @@ function dbGet(storeName, key, value) {
         tx.oncomplete = _ => resolve(result);
         tx.onerror = event => reject(event.target.error);
         const store = tx.objectStore(storeName);
-        const index = store.index(key);
-        const request = index.get(value);
+        const request = store.get(value);
         request.onsuccess = _ => result = request.result;
     });
 }
@@ -62,7 +73,7 @@ function dbGet(storeName, key, value) {
 
 
 async function loadResource(res_url,returnRaw){
-    console.log("Fetching resource: " + res_url);
+    if(LOAD_VERBOSE)console.log("Fetching resource: " + res_url);
     let response = await fetch('https://raw.githubusercontent.com/BSData/age-of-sigmar-4th/main/'+res_url+'.cat');
     if(!response)return console.error("Failed to load " + decodeURI(res_url));
     let xmlRaw = await response.text();
@@ -74,7 +85,7 @@ async function loadResource(res_url,returnRaw){
 
 
 async function loadXMLDataFromStorage(dataName){
-    //console.log("attempting to load " + dataName)
+    if(LOAD_VERBOSE)console.log("attempting to load " + dataName)
     let _data = await dbGet("data","name",dataName);
     //console.log("loaded",_data)
     try{
@@ -85,7 +96,7 @@ async function loadXMLDataFromStorage(dataName){
             console.log(dataName + " Data in Browser Storage is too old.");
             _data = null;
         }else{
-            console.log("Loading "+dataName+" data from browser storage.");
+            if(LOAD_VERBOSE)console.log("Loading "+dataName+" data from browser storage.");
             _data = parseXml(_data.data);
         }
     }catch(e){
@@ -111,12 +122,12 @@ async function loadCore(force=false){
         data.core = parseXml(xmlRaw);
         let jsonData = xmlRaw;
         localStorage.setItem("core",JSON.stringify({"DT":new Date().getTime(),"data":jsonData}));
-        storeResourceInDB("core",jsonData);
+        storeResourceInDB("core",xmlRaw);
         console.log("Fetched new Core data");
     }else{
         data.core = core;
     }
-    console.log(data.core)
+    if(LOAD_DEBUG)console.log(data.core)
     let publications = data.core.querySelector("publications").children;
     parsedData["Factions"] = [];
     for(let i = 0; i < publications.length;i++){
@@ -177,6 +188,7 @@ function loadRoRLibs(){
         let resName = catLink.attributes.name.value;
         let faction = resName.split('-')[0].trim();
         let lib = await loadXMLDataFromStorage(faction+"_units");
+        
         if(lib){
             if(!data[faction])data[faction] = {};
 
@@ -220,17 +232,20 @@ async function loadFaction(faction = null, force=false){
 
     console.log("Retrieving BSData for " + factionName);
 
-  
-
-    if(!rules)rules = await loadResource(faction,true);
-    if(!units)units = await loadResource(faction + '%20-%20Library',true);
+    if(!rules){
+        rules = await loadResource(faction,true);
+        data[factionName]["rules"] = parseXml(rules);
+        storeResourceInDB(factionName+"_rules",rules);
+    }
+    if(!units){
+        units = await loadResource(faction + '%20-%20Library',true);
+        data[factionName]["units"] = parseXml(units);
+        storeResourceInDB(factionName+"_units",units);
+    }
 
     //console.log(blob);
-    data[factionName] = {};
-    data[factionName]["rules"] = parseXml(rules);
-    data[factionName]["units"] = parseXml(units);
-    await storeResourceInDB(factionName+"_rules",rules);
-    await storeResourceInDB(factionName+"_units",units);
+    
+   
    
 }
 
