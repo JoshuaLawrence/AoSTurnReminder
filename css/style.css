@@ -1,0 +1,60 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+.abilityDiv , .weaponProfileDiv {
+  display: flex;
+  
+  border: solid black;
+  margin: 5px;
+  padding: 5px;
+  width: 650px;
+}
+.abilityDiv {
+  flex-direction: column;
+}
+.weaponProfileDiv {
+  flex-direction: row;
+}
+.abilityDiv > div {
+  display: flex;
+  gap: 15px;
+  padding: 5px;
+  
+}
+.abilityDiv > span {
+  font-weight: bold;
+}
+.abilityDiv > div > label {
+  font-weight: bold;
+  padding-right: 10px;
+  width: 70px;
+}
+.abilityDiv > div > span {
+  width: -webkit-fill-available;
+}
+.weaponProfileDiv {
+  flex-direction: row;
+}
+.weaponProfileDiv > div {
+  display: flex;
+  gap: 15px;
+  padding: 5px;
+  flex-direction: column;
+}
+.weaponProfileDiv > span {
+  width: 140px;
+  font-weight: bold;
+}
+.weaponProfileDiv > div > label {
+  font-weight: bold;
+  min-width: 30px;
+}
+.weaponProfileDiv > div > span {
+
+  max-width: 150px;
+}
