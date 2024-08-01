@@ -41,7 +41,7 @@ function storeResourceInDB(resource_name,data){
     const transaction = db.transaction(["data"], "readwrite");
     const dataObjectStore = transaction.objectStore("data");
    // console.log("Storing in DB",resource);
-    dataObjectStore.add(resource);
+    dataObjectStore.put(resource);
 }
 
 
