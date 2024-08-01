@@ -212,12 +212,17 @@ async function loadFaction(faction = null, force=false){
         faction = document.getElementById('FactionPicker').value;
     }
     let factionName = decodeURI(faction);
-    if(data[factionName]?.rules)return console.log("Already have " + factionName + " in Cache.");
-
-    let rules = await loadXMLDataFromStorage(factionName+"_rules");
-
-    let units = await loadXMLDataFromStorage(factionName+"_units");
+    if(data[factionName]?.rules && !force)return console.log("Already have " + factionName + " in Cache.");
+    
     if(!data[factionName])data[factionName] = {};
+    let rules,units;
+
+    //if forcing an update - dont even try to get it from storage
+    if(!force){
+        rules = await loadXMLDataFromStorage(factionName+"_rules");
+        units = await loadXMLDataFromStorage(factionName+"_units");
+    }
+    
     if(rules){
         //console.log("rules",rules)
         data[factionName]["rules"] = rules;
@@ -226,6 +231,8 @@ async function loadFaction(faction = null, force=false){
         //console.log("units",units)
         data[factionName]["units"] = units;
     }
+
+    //if both rules and units were fetched, we can return;
     if(rules && units){
         return;
     }
