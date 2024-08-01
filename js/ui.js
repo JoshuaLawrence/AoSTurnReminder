@@ -277,7 +277,7 @@ function createPhaseDiv(phase,abilities){
 function createAbilityDiv(ability){
     let abilityDiv = document.createElement("div");
     let abTitle = document.createElement("span");
-    abTitle.innerHTML = ability.name;
+    abTitle.innerHTML = ability.name + " - " + ability.typeName;
     abilityDiv.appendChild(abTitle);
 
     let showWeapon = document.getElementById("showWeaponChk").checked;
