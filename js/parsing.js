@@ -93,8 +93,13 @@ function linkListData(list){
     //console.log(_data);
     list.units.forEach((unit,unit_idx)=>{
         let _unit = _data.units.querySelector('[type="unit"][name="'+unit.unitName+'" i]');
+        //look in core rules for manifestations if unit wasn't found
         if(!_unit){
-            let msg = "Could not find data for Unit: [" + unit.unitName + "]";
+            _unit = data.core.querySelector('[name="'+unit.unitName+'" i]');
+        }
+        if(!_unit){
+
+            let msg = "Could not find data for "+((unit?.type == "manifestation")?("Manifestation"):("Unit"))+": [" + unit.unitName + "]";
             if(!list.parseErrors)list.parseErrors = [];
             list.parseErrors.push({msg,'str':unit.unitName})
             console.error(msg);
@@ -172,7 +177,8 @@ function addManifestationsToList(list,entry){
     profiles.forEach(profile=>{
         
         let manifestationName = profile.attributes.name.value.slice(7);
-        list.units.push({unitName:manifestationName,abilities:[]});
+        manifestationName = manifestationName.replace('’',"'");//standardise the symbols
+        list.units.push({unitName:manifestationName,abilities:[],type:"manifestation"});
     })
 }
 
