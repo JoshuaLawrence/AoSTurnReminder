@@ -5,7 +5,7 @@ function linkListData(list){
     list.abilities = {};
     //battle traits
     let battleTraitProfiles = _data.rules.querySelectorAll("sharedSelectionEntries selectionEntry profiles profile");
- 
+    console.log(battleTraitProfiles);
     battleTraitProfiles.forEach(profile=>{
         let name = profile.attributes.name.value;
         let id = profile.attributes.id.value;
@@ -16,7 +16,14 @@ function linkListData(list){
     });
 
     //battle formation ability
-
+    let battleFormationEntries = _data.rules.querySelectorAll('selectionEntryGroup[name="Battle Formations: '+list.faction+'"] selectionEntries selectionEntry');
+    console.log(battleFormationEntries);
+    battleFormationEntries.forEach(entry => {
+        let bFName = entry.attributes.name.value;
+        if(bFName == list.battleFormation){
+            parseProfiles(list,entry);
+        }
+    });
     //Spell lore
 
     //prayer lore
