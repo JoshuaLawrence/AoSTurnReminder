@@ -4,7 +4,7 @@ async function dbSetup(){
     return new Promise((resolve, reject) => {
         const request = indexedDB.open("AoSTR_DATA");
         request.onerror = (event) => {
-            console.error("Why didn't you allow my web app to use IndexedDB?!",event);
+            console.error("Failed to open indexedDB",event);
             reject();
         };
         request.onsuccess = (event) => {

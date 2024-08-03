@@ -102,7 +102,7 @@ function linkListData(list){
             let msg = "Could not find data for "+((unit?.type == "manifestation")?("Manifestation"):("Unit"))+": [" + unit.unitName + "]";
             if(!list.parseErrors)list.parseErrors = [];
             list.parseErrors.push({msg,'str':unit.unitName})
-            console.error(msg);
+            console.log(msg);
             return;
         }
         //get abilities
@@ -154,7 +154,7 @@ function linkListData(list){
                     }
                     return false;
                 })
-                if(!ror_data) return console.error("could not find RoR unit " + unit.unitName);
+                if(!ror_data) return console.log("could not find RoR unit " + unit.unitName);
                 let _unit = ror_data.units.querySelector('[type="unit"][name="'+unit.unitName+'" i]');
                 parseProfiles(list,_unit,'r'+RoR_idx+'_'+unit_idx,unit)
             });
@@ -168,7 +168,7 @@ function logParseError(parseType,parseName,list){
     let msg = "Could not find data for "+parseType+": [" + parseName + "]";
     if(!list.parseErrors)list.parseErrors = [];
     list.parseErrors.push({msg,'str':parseName})
-    console.error(msg);
+    console.log(msg);
     return;
 }
 
