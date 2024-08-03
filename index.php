@@ -5,9 +5,9 @@
 
 <head>
     <link rel='stylesheet' href='/AoSTurnReminder/css/style.css'></link>
-    <script src='/AoSTurnReminder/js/loading.js'></script>
-    <script src='/AoSTurnReminder/js/parsing.js'></script>
-    <script src='/AoSTurnReminder/js/ui.js'></script>
+    <script src='/AoSTurnReminder/js/loading.js?version=1'></script>
+    <script src='/AoSTurnReminder/js/parsing.js?version=1'></script>
+    <script src='/AoSTurnReminder/js/ui.js?version=1'></script>
     
 </head>
 <body>
