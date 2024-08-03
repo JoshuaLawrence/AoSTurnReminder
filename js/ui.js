@@ -101,8 +101,42 @@ function nrParse(importListRaw){
             importList["faction"] = parts[0].trim();
             importList["armyName"] = parts[1].trim();
         }
-        
-       
+        if(row.includes("Battle Formation")){
+            importList["battleFormation"] = row.split(":")[1].trim();
+        }
+        if(row.includes("Manifestation Lore")){
+            importList["manifestationLore"] = row.split(":")[1].trim();
+        }
+        if(row.includes("Prayer Lore")){
+            importList["prayerLore"] = row.split(":")[1].trim();
+        }
+        if(row.includes("Spell Lore")){
+            importList["spellLore"] = row.split(":")[1].trim();
+        }
+        if(row.includes("FACTION TERRAIN")){
+            while(!row.includes('#')){
+                i++;
+                if(row.trim() != ""){
+                    row = importListRaw[++i];
+                    importList["units"].push({unitName:row.trim(),abilities:[]});
+                }
+            }
+        }
+        //add units
+        if(row.includes("]:")){
+            let unitName = row.split("[")[0].trim();
+            console.log(!isNaN(unitName[0]))
+            if(!isNaN(unitName[0])){
+
+                unitName = unitName.slice(2).trim();
+            }
+            importList["units"].push({unitName,abilities:[]});
+        }
+        if(row.includes("Regiments of Renown")){
+            //loop through till end of input here
+            for(++i; i < importListRaw.length; i++){
+            }
+        }
 
     }
     return importList;
