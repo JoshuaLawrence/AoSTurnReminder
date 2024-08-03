@@ -100,41 +100,68 @@ function nrParse(importListRaw){
             let parts = row.split("-");
             importList["faction"] = parts[0].trim();
             importList["armyName"] = parts[1].trim();
+            row = importListRaw[++i];
         }
-        if(row.includes("Battle Formation")){
+        else if(row.includes("Battle Formation")){
             importList["battleFormation"] = row.split(":")[1].trim();
         }
-        if(row.includes("Manifestation Lore")){
+        else if(row.includes("Manifestation Lore")){
             importList["manifestationLore"] = row.split(":")[1].trim();
         }
-        if(row.includes("Prayer Lore")){
+        else if(row.includes("Prayer Lore")){
             importList["prayerLore"] = row.split(":")[1].trim();
         }
-        if(row.includes("Spell Lore")){
+        else if(row.includes("Spell Lore")){
             importList["spellLore"] = row.split(":")[1].trim();
         }
-        if(row.includes("FACTION TERRAIN")){
+        else if(row.includes("FACTION TERRAIN")){
+            row = importListRaw[++i];
             while(!row.includes('#')){
-                i++;
                 if(row.trim() != ""){
-                    row = importListRaw[++i];
                     importList["units"].push({unitName:row.trim(),abilities:[]});
                 }
+                row = importListRaw[++i];
             }
         }
         //add units
-        if(row.includes("]:")){
+        else if(row.includes("]:")){
             let unitName = row.split("[")[0].trim();
-            console.log(!isNaN(unitName[0]))
             if(!isNaN(unitName[0])){
-
+                let unitCount = parseInt(unitName[0]);
                 unitName = unitName.slice(2).trim();
+                for(let j = 1;j<unitCount;j++){
+                    importList["units"].push({unitName,abilities:[]});
+                }
             }
             importList["units"].push({unitName,abilities:[]});
         }
-        if(row.includes("Regiments of Renown")){
+        else if(row.includes("Regiments of Renown")){
+            //get RoR name
+            importList["regimentsOfRenown"].push({"name":row.split("++")[1].trim(),"units":[]});
             //loop through till end of input here
             for(++i; i < importListRaw.length; i++){
+                row = importListRaw[i];
+                //add RoR units to last added RoR
+                if(row.includes("]:")){
+                    let unitName = row.split("[")[0].trim();
+                    if(!isNaN(unitName[0])){
+                        unitName = unitName.slice(2).trim();
+                    }
+                    importList["regimentsOfRenown"][importList["regimentsOfRenown"].length-1]["units"].push({unitName,abilities:[]});
+                }
+                else if(row.includes("HERO")){
+                    row = importListRaw[++i];
+                    while(!row.includes('#')){
+                        if(row.trim() != ""){
+                            importList["regimentsOfRenown"][importList["regimentsOfRenown"].length-1]["units"].push({unitName:row.split(":")[0].trim(),abilities:[]});
+                        }
+                        row = importListRaw[++i];
+                    }
+                }
+                else if(row.includes(":") && !row.includes("•")){
+                    let unitName = row.split(":")[0].trim();
+                    importList["regimentsOfRenown"][importList["regimentsOfRenown"].length-1]["units"].push({unitName,abilities:[]});
+                }
             }
         }
 
