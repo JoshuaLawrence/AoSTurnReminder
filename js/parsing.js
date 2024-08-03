@@ -25,7 +25,7 @@ function linkListData(list){
         }
     });
     //Spell Lore
-    if(list.spellLore.abilities != undefined){
+    if(list.spellLore?.abilities != undefined){
         let spellLoreEntries = _data.rules.querySelectorAll('selectionEntryGroup[name="Spell Lores"] selectionEntries selectionEntry');
         //console.log(spellLoreEntries);
         spellLoreEntries.forEach(entry => {
@@ -41,7 +41,7 @@ function linkListData(list){
         }
     }
     //Prayer Lore
-    if(list.prayerLore.abilities != undefined){
+    if(list.prayerLore?.abilities != undefined){
         let prayerLoreEntries = _data.rules.querySelectorAll('selectionEntryGroup[name="Prayer Lores"] selectionEntries selectionEntry');
         //console.log(prayerLoreEntries);
         prayerLoreEntries.forEach(entry => {
@@ -56,10 +56,11 @@ function linkListData(list){
         }
     }
     //Manifestation Lore
-    if(list.manifestationLore.abilities != undefined){
-        let manifestationLoreEntries = _data.rules.querySelectorAll('selectionEntryGroup[name="Manifestation Lores"] selectionEntries selectionEntry');
-       //console.log(manifestationLoreEntries);
-        manifestationLoreEntries.forEach(entry => {
+    //console.log(list.manifestationLore)
+    if(list.manifestationLore?.abilities != undefined){
+        let factionManifestationLoreEntries = _data.rules.querySelectorAll('selectionEntryGroup[name="Manifestation Lores"] selectionEntries selectionEntry');
+        //console.log(manifestationLoreEntries);
+        factionManifestationLoreEntries.forEach(entry => {
             //console.log(entry)
             let _manifestationLore = entry.attributes.name.value;
             if(_manifestationLore == list.manifestationLore.name){
@@ -69,6 +70,21 @@ function linkListData(list){
                 addManifestationsToList(list,entry);
             }
         });
+        //check manifestations from core rules
+        let generalManifestationLoreEntries = data.core.querySelectorAll('selectionEntryGroup[name="Manifestation Lores"] selectionEntries selectionEntry');
+        //console.log(generalManifestationLoreEntries);
+        generalManifestationLoreEntries.forEach(entry => {
+            //console.log(entry)
+            let _manifestationLore = entry.attributes.name.value;
+            //console.log(_manifestationLore,list.manifestationLore.name);
+            if(_manifestationLore == list.manifestationLore.name){
+                //console.log("parsing profile " + _manifestationLore)
+                parseProfiles(list,entry,null,list.manifestationLore,true);
+                //add manifestation units to units list
+                addManifestationsToList(list,entry);
+            }
+        });
+        //console.log(list.manifestationLore.abilities)
         if(list.manifestationLore.abilities.length == 0){
             logParseError("Manifestation Lore",list.manifestationLore.name,list);
         }
