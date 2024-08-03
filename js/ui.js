@@ -73,6 +73,9 @@ function parseImportText(){
         "battleFormation":null,
         "units":[],
         "regimentsOfRenown": [],
+        "spellLore":[],
+        "prayerLore":[],
+        "manifestationLore":[],
         "parseErrors":[],
         "rawInput": importListRaw
     };
@@ -97,6 +100,21 @@ function parseImportText(){
             row = importListRaw[++i];
             importList["battleFormation"] = row;
 
+        }
+        //Get Spell Lore name
+        if(row.includes("Spell Lore")){
+            let spellLore = row.split("-")[1].trim();
+            importList["spellLore"].push({name:spellLore,abilities:[]});
+        }
+        //Get Prayer Lore name
+        if(row.includes("Prayer Lore")){
+            let prayerLore = row.split("-")[1].trim();
+            importList["prayerLore"].push({name:prayerLore,abilities:[]});
+        }
+        //Get Manifestation Lore name
+        if(row.includes("Manifestation Lore")){
+            let manifestationLore = row.split("-")[1].trim();
+            importList["manifestationLore"].push({name:manifestationLore,abilities:[]});
         }
         //Get Unit name
         if(row.includes("(")){
