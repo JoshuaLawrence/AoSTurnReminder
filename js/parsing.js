@@ -65,6 +65,8 @@ function linkListData(list){
             if(_manifestationLore == list.manifestationLore.name){
                 //console.log("parsing profile " + _manifestationLore)
                 parseProfiles(list,entry,null,list.manifestationLore,true);
+                //add manifestation units to units list
+                addManifestationsToList(list,entry);
             }
         });
         if(list.manifestationLore.abilities.length == 0){
@@ -149,22 +151,30 @@ function logParseError(parseType,parseName,list){
     return;
 }
 
+function addManifestationsToList(list,entry){
+    let profiles = entry.querySelectorAll('profile');
+    profiles.forEach(profile=>{
+        
+        let manifestationName = profile.attributes.name.value.slice(7);
+        list.units.push({unitName:manifestationName,abilities:[]});
+    })
+}
 
 function parseProfiles(list,xmlData,unit_idx = null,unit = null,wargear = false){
     let query = 'profile';
     if(!wargear) 
         query = 'profile:not(selectionEntryGroup[name="Wargear Options"]>*>*>*>*>*>profile)';
     let profiles = xmlData.querySelectorAll(query);
-    
+    let invalidTypeNames = ["Unit","Manifestation"];
     profiles.forEach(profile=>{
         //console.log(profile);
         let typeId = profile.attributes.typeId.value;
-        if(PROFILE[typeId].name == "Unit"){
+        if(invalidTypeNames.includes(PROFILE[typeId].name)){
             return;
         }
         let name = profile.attributes.name.value;
         let id = profile.attributes.id.value;
-        
+       
         if(!list.abilities[id]){
            
             list.abilities[id] = parseAbility(profile);
