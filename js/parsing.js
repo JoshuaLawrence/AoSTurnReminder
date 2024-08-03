@@ -5,7 +5,7 @@ function linkListData(list){
     list.abilities = {};
     //battle traits
     let battleTraitProfiles = _data.rules.querySelectorAll("sharedSelectionEntries selectionEntry profiles profile");
-    console.log(battleTraitProfiles);
+    //console.log(battleTraitProfiles);
     battleTraitProfiles.forEach(profile=>{
         let name = profile.attributes.name.value;
         let id = profile.attributes.id.value;
@@ -17,19 +17,60 @@ function linkListData(list){
 
     //battle formation ability
     let battleFormationEntries = _data.rules.querySelectorAll('selectionEntryGroup[name="Battle Formations: '+list.faction+'"] selectionEntries selectionEntry');
-    console.log(battleFormationEntries);
+    //console.log(battleFormationEntries);
     battleFormationEntries.forEach(entry => {
-        let bFName = entry.attributes.name.value;
-        if(bFName == list.battleFormation){
+        let _battleFormation = entry.attributes.name.value;
+        if(_battleFormation == list.battleFormation){
             parseProfiles(list,entry);
         }
     });
-    //Spell lore
-
-    //prayer lore
-
-    //manifestation lore
-
+    //Spell Lore
+    if(list.spellLore.abilities != undefined){
+        let spellLoreEntries = _data.rules.querySelectorAll('selectionEntryGroup[name="Spell Lores"] selectionEntries selectionEntry');
+        //console.log(spellLoreEntries);
+        spellLoreEntries.forEach(entry => {
+            //console.log(entry)
+            let _spellLore = entry.attributes.name.value;
+            if(_spellLore == list.spellLore.name){
+                //console.log("parsing profile " + _spellLore)
+                parseProfiles(list,entry,null,list.spellLore,true);
+            }
+        });
+        if(list.spellLore.abilities.length == 0){
+            logParseError("Spell Lore",list.spellLore.name,list);
+        }
+    }
+    //Prayer Lore
+    if(list.prayerLore.abilities != undefined){
+        let prayerLoreEntries = _data.rules.querySelectorAll('selectionEntryGroup[name="Prayer Lores"] selectionEntries selectionEntry');
+        //console.log(prayerLoreEntries);
+        prayerLoreEntries.forEach(entry => {
+            //console.log(entry)
+            let _prayerLore = entry.attributes.name.value;
+            if(_prayerLore == list.prayerLore.name){
+                parseProfiles(list,entry,null,list.prayerLore,true);
+            }
+        });
+        if(list.prayerLore.abilities.length == 0){
+            logParseError("Prayer Lore",list.prayerLore.name,list);
+        }
+    }
+    //Manifestation Lore
+    if(list.manifestationLore.abilities != undefined){
+        let manifestationLoreEntries = _data.rules.querySelectorAll('selectionEntryGroup[name="Manifestation Lores"] selectionEntries selectionEntry');
+       //console.log(manifestationLoreEntries);
+        manifestationLoreEntries.forEach(entry => {
+            //console.log(entry)
+            let _manifestationLore = entry.attributes.name.value;
+            if(_manifestationLore == list.manifestationLore.name){
+                //console.log("parsing profile " + _manifestationLore)
+                parseProfiles(list,entry,null,list.manifestationLore,true);
+            }
+        });
+        if(list.manifestationLore.abilities.length == 0){
+            logParseError("Manifestation Lore",list.manifestationLore.name,list);
+        }
+    }
     //unit abilities
     //console.log(_data);
     list.units.forEach((unit,unit_idx)=>{
@@ -100,13 +141,23 @@ function linkListData(list){
    
 }
 
+function logParseError(parseType,parseName,list){
+    let msg = "Could not find data for "+parseType+": [" + parseName + "]";
+    if(!list.parseErrors)list.parseErrors = [];
+    list.parseErrors.push({msg,'str':parseName})
+    console.error(msg);
+    return;
+}
+
+
 function parseProfiles(list,xmlData,unit_idx = null,unit = null,wargear = false){
     let query = 'profile';
     if(!wargear) 
         query = 'profile:not(selectionEntryGroup[name="Wargear Options"]>*>*>*>*>*>profile)';
     let profiles = xmlData.querySelectorAll(query);
-   
+    
     profiles.forEach(profile=>{
+        //console.log(profile);
         let typeId = profile.attributes.typeId.value;
         if(PROFILE[typeId].name == "Unit"){
             return;
@@ -120,8 +171,9 @@ function parseProfiles(list,xmlData,unit_idx = null,unit = null,wargear = false)
         }
         if(unit_idx !== null && unit){
             list.abilities[id].units.push(unit_idx);
-            unit.abilities.push({id,name});
         }
+        if(unit !== null)
+            unit.abilities.push({id,name});
     })
 }
 
