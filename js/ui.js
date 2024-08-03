@@ -166,6 +166,7 @@ function nrParse(importListRaw){
         }
 
     }
+    updateListStorage(importList);
     return importList;
 }
 
@@ -266,22 +267,15 @@ function gwParse(importListRaw){
             }
         }
     }
-    //check if this is a list update or a new list
-    
-    let existingListIndex = parsedData["Lists"].findIndex((list) => list.armyName == importList.armyName);
-    if(existingListIndex < 0){
-        console.log("Adding List ["+importList.armyName+"]");
-        parsedData["Lists"].push(importList);
-    }else{
-        console.log("Updating List["+importList.armyName+"]");
-        parsedData["Lists"][existingListIndex] = importList;
-    }
+   
     //store the list(s) in local storage
-    updateListStorage();
-    console.log("importList",importList);
+    updateListStorage(importList);
+    //console.log("importList",importList);
 
     return importList;
 }
+
+
 
 function loadImportText(){
     if(!selectedList)return;
@@ -501,7 +495,18 @@ function removeSelectedList(listIdx = null){
    
 }
 
-function updateListStorage(){
+function updateListStorage(listUpdate = null){
+    if(listUpdate){
+        //check if this is a list update or a new list
+        let existingListIndex = parsedData["Lists"].findIndex((list) => list.armyName == listUpdate.armyName);
+        if(existingListIndex < 0){
+            console.log("Adding List ["+listUpdate.armyName+"]");
+            parsedData["Lists"].push(listUpdate);
+        }else{
+            console.log("Updating List["+listUpdate.armyName+"]");
+            parsedData["Lists"][existingListIndex] = listUpdate;
+        }
+    }
     localStorage.setItem("Lists",JSON.stringify(parsedData['Lists']));
 }
 
