@@ -7,11 +7,13 @@ var parsedData = {
     "Lists": [],
 };
 var PROFILE = {};
-
+//IndexedDB link
 var db;
-//TODO 
-// battle formation ability
-// RoR ability and RoR unit abilities
+
+const DEBUG = {
+    errors:[],
+
+};
 
 
 document.addEventListener("DOMContentLoaded", init);
@@ -25,8 +27,20 @@ async function init(){
     
     //load stored lists from cache
     loadExistingLists();
-}
 
+    const error = console.error.bind(console)
+    console.error = (...args) => {
+        //error logging
+        if(args.length == 1){
+            DEBUG.errors.push(args[0]);
+        } else {
+            DEBUG.errors.push(args);
+        }
+        
+        error(...args)
+    }
+
+}
 
 
 function loadExistingLists(){
