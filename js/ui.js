@@ -70,6 +70,7 @@ function parseImportText(){
     let importList = {
         "armyName":null,
         "faction":null,
+        "battleFormation":null,
         "units":[],
         "regimentsOfRenown": [],
         "parseErrors":[],
@@ -92,6 +93,10 @@ function parseImportText(){
         //Get Faction
         if(parsedData["Factions"].includes(row.trim().replace("Realm-lord","Realmlord"))){
             importList["faction"] = row;
+            //Get Battle Formation
+            row = importListRaw[++i];
+            importList["battleFormation"] = row;
+
         }
         //Get Unit name
         if(row.includes("(")){
