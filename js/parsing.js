@@ -235,40 +235,40 @@ function parseAbility(profile){
 function sortAbilitiesByPhase(list){
     if(list.phases){
         console.log("already sorted",list.phases);
-        return;
+        //return;
     }
      //sort abilities by phase
      let phases = {
         deployment:[],
         start_of_battle_round:[],
         your:{
-            Hero:[],
-            Movement:[],
-            Shooting:[],
-            Charge:[],
-            Combat:[],
-            EndOfTurn:[],
-            other:[]
+            Hero:{Passive:[],Abilities:[]},
+            Movement:{Passive:[],Abilities:[]},
+            Shooting:{Passive:[],Abilities:[],Weapons:[]},
+            Charge:{Passive:[],Abilities:[]},
+            Combat:{Passive:[],Abilities:[],Weapons:[]},
+            EndOfTurn:{Passive:[],Abilities:[]},
+            other:{Passive:[],Abilities:[]},
         },
         enemy:{
-            Hero:[],
-            Movement:[],
-            Shooting:[],
-            Charge:[],
-            Combat:[],
-            EndOfTurn:[],
-            other:[]
+            Hero:{Passive:[],Abilities:[]},
+            Movement:{Passive:[],Abilities:[]},
+            Shooting:{Passive:[],Abilities:[],Weapons:[]},
+            Charge:{Passive:[],Abilities:[]},
+            Combat:{Passive:[],Abilities:[],Weapons:[]},
+            EndOfTurn:{Passive:[],Abilities:[]},
+            other:{Passive:[],Abilities:[]},
         },
         passive:[],
         reaction:[],
         other:{
-            Hero:[],
-            Movement:[],
-            Shooting:[],
-            Charge:[],
-            Combat:[],
-            EndOfTurn:[],
-            other:[]
+            Hero:{Passive:[],Abilities:[]},
+            Movement:{Passive:[],Abilities:[]},
+            Shooting:{Passive:[],Abilities:[],Weapons:[]},
+            Charge:{Passive:[],Abilities:[]},
+            Combat:{Passive:[],Abilities:[],Weapons:[]},
+            EndOfTurn:{Passive:[],Abilities:[]},
+            other:{Passive:[],Abilities:[]},
         }
     }
 
@@ -286,13 +286,13 @@ function sortAbilitiesByPhase(list){
             return;
         }
         if(ability.typeName.includes("Melee Weapon")){
-            phases.your.Combat.push(ability);//.id;
-            phases.enemy.Combat.push(ability);//.id;
+            phases.your.Combat.Weapons.push(ability);//.id;
+            phases.enemy.Combat.Weapons.push(ability);//.id;
             return;
         }
         if(ability.typeName.includes("Ranged Weapon")){
-            phases.your.Shooting.push(ability);//.id;
-            phases.enemy.Shooting.push(ability);//.id;
+            phases.your.Shooting.Weapons.push(ability);//.id;
+            phases.enemy.Shooting.Weapons.push(ability);//.id;
             return;
         }
         if(ability.chars?.Timing?.includes("Reaction")){
@@ -328,12 +328,13 @@ function sortAbilitiesByPhase(list){
         }else{
             phase = "other";
         }
+
         if(turn != "any"){
-            phases[turn][phase].push(ability);//.id;
+            phases[turn][phase].Abilities.push(ability);//.id;
         }else{
             
-            phases.your[phase].push(ability);//.id;
-            phases.enemy[phase].push(ability);//.id;
+            phases.your[phase].Abilities.push(ability);//.id;
+            phases.enemy[phase].Abilities.push(ability);//.id;
         }
         
     });

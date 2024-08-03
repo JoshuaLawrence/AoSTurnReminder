@@ -258,28 +258,43 @@ function createPhaseDiv(phase,abilities){
     
 
     if(phase == "your" || phase == "enemy"){
-        Object.entries(abilities).forEach(([_phase,_abilities])=>{
+        Object.entries(abilities).forEach(([_phase,profiles])=>{
+            let _abilities = profiles.Abilities;
+            let _weapons = profiles.Weapons;
             if(_phase=="other"){
                 if(_abilities.length>0)
-                console.log(phase + "_" + _phase,_abilities);
+                    console.log(phase + "_" + _phase,_abilities);
+                if(_weapons?.length>0)
+                    console.log(phase + "_" + _phase,_weapons);
                 return;
             }
-            if(_abilities.length == 0) return;
-            phaseDiv.appendChild(createPhaseDiv(phase.slice(0,1).toUpperCase() + phase.slice(1) +" " +_phase,_abilities));
+            if(_abilities.length > 0 || _weapons?.length > 0)
+                phaseDiv.appendChild(createPhaseDiv(phase.slice(0,1).toUpperCase() + phase.slice(1) +" " +_phase,profiles));
         });
         
     }else if(phase != "other"){
 
-        header.appendChild(title);
-        abilities.forEach(ability=>{
+        header.appendChild(title); 
+        let _abilities = abilities;
+        if(abilities?.Abilities != undefined){
+            _abilities = abilities.Abilities;
+        }
+        _abilities.forEach(ability=>{
             let abilityDiv = createAbilityDiv(ability);
             if(abilityDiv)
                 body.appendChild(abilityDiv);
         })
+        let _weapons = abilities.Weapons;
+        if(_weapons != undefined){
+            _weapons.forEach(weapon=>{
+                let weaponDiv = createAbilityDiv(weapon);
+                if(weaponDiv)
+                    body.appendChild(weaponDiv);
+            })
+        }
 
-
-    }else{
-        let otherAbilities = {};
+    }else{  
+        
         Object.entries(abilities).forEach(([_phase,_abilities])=>{
             if(_abilities.length)console.log(phase+"_"+_phase,_abilities);
         })
