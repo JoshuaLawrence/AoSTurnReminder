@@ -42,26 +42,39 @@ async function init(){
 
 }
 
-function copyErrorsToClipboard(){
-    navigator.clipboard.writeText(JSON.stringify({"ConsoleErrors":DEBUG.errors,"Lists":parsedData.Lists}));
-    alert("Copied Error Data to Clipboard\nPlease send in a message to the dev if you know him.");
+function downloadDebugJson(){
+
+    let link = document.createElement('a');
+    link.setAttribute('download', 'AoSReminders_debug.json');
+    link.href = makeTextFile(JSON.stringify({"ConsoleErrors":DEBUG.errors,"Lists":parsedData.Lists}));
+    document.body.appendChild(link);
+
+    window.requestAnimationFrame(function () {
+        var event = new MouseEvent('click');
+        link.dispatchEvent(event);
+        document.body.removeChild(link);
+        alert("Please send the AoSReminders_debug.json in a message to the dev if you know him.");
+    });
+    
+    
 }
 
-function fixTextForHtml(str){
-    //replace spaces with html code
-    for(let i = 0; i<100; i++){
-        str = str.replace(" ",'&nbsp;');
-        if(!str.includes(" "))
-            break;
+var textFile = null;
+function makeTextFile (text) {
+    var data = new Blob([text], {type: 'application/json'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
     }
-    //replace newlines with
-    for(let i = 0; i<100; i++){
-        str = str.replace("\n",'<br>');
-        if(!str.includes("\n"))
-            break;
-    }
-    return str;
-}
+
+    textFile = window.URL.createObjectURL(data);
+
+    // returns a URL you can use as a href
+    return textFile;
+  };
+
 
 function loadExistingLists(){
     //load existing lists from localStorage
