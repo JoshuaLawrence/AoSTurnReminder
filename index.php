@@ -5,6 +5,7 @@
 
 <head>
     <link rel='stylesheet' href='/AoSTurnReminder/css/style.css'></link>
+    <script src='/AoSTurnReminder/data/coreAbilities.js?version=1'></script>
     <script src='/AoSTurnReminder/js/loading.js?version=1'></script>
     <script src='/AoSTurnReminder/js/parsing.js?version=1'></script>
     <script src='/AoSTurnReminder/js/ui.js?version=1'></script>
