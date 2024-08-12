@@ -518,6 +518,11 @@ function createAbilityCharDiv(char,val){
         val = val.replace("*","<i>");
         val = val.replace("*","</i>");
     }
+    //do line breakes
+    while(val.includes("\n")){//
+        val = val.replace("\n","<br>");
+    }
+    
     span.innerHTML=val;
     div.appendChild(label);
     div.appendChild(span);
