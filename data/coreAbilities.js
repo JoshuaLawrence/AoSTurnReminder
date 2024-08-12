@@ -4,7 +4,7 @@ let coreAbilities = [
             Timing:"Any Hero Phase",
             Declare:"Pick a friendly unit that is not in combat to use this ability.",
             Cost:"1",
-            Effect:"Make 6 rally rolls of D6. For each 4+, you receive 1 rally point. Rally points can be spent in the following ways: For each rally point spent, **Heal (1)** that unit. You can spend a number of rally points equal to the Health characteristic of that unit to return a slain model to that unit. You can spend the rally points in any combination of the above. Unspent rally points are then lost.",
+            Effect:"Make 6 rally rolls of D6. For each 4+, you receive 1 rally point. Rally points can be spent in the following ways:\n• For each rally point spent, **Heal (1)** that unit.\n• You can spend a number of rally points equal to the Health characteristic of that unit to return a slain model to that unit.\n You can spend the rally points in any combination of the above. Unspent rally points are then lost.",
             Keywords:"",
         },
         name: "Rally",
