@@ -462,6 +462,8 @@ function createAbilityDiv(ability){
     let abTitle = document.createElement("span");
     abTitle.innerHTML = ability.name + " - " + ability.typeName;
     abilityDiv.appendChild(abTitle);
+    let containerDiv = document.createElement("div");
+    abilityDiv.appendChild(containerDiv);
 
     let showWeapon = document.getElementById("showWeaponChk").checked;
     if(['Melee Weapon','Ranged Weapon'].includes(ability.typeName)){
@@ -473,7 +475,7 @@ function createAbilityDiv(ability){
 
     Object.entries(ability.chars).forEach(([key,value])=>{
         let div = createAbilityCharDiv(key,value);
-        abilityDiv.appendChild(div);
+        containerDiv.appendChild(div);
     });
     let unitsDiv = document.createElement("div");
     let unTitle = document.createElement("label");
@@ -492,7 +494,7 @@ function createAbilityDiv(ability){
         span.innerHTML = unit.unitName;
         unitsDiv.appendChild(span);
     })
-    abilityDiv.appendChild(unitsDiv);
+    containerDiv.appendChild(unitsDiv);
     return abilityDiv;
 }
 

@@ -8,53 +8,49 @@ a {
 }
 .abilityDiv , .weaponProfileDiv {
   display: flex;
-  
+  flex-direction: column;
   border: solid black;
   margin: 5px;
   padding: 5px;
   width: 650px;
 }
-.abilityDiv {
-  flex-direction: column;
-}
-.weaponProfileDiv {
-  flex-direction: row;
+.abilityDiv > span, .weaponProfileDiv > span {
+  font-weight: bold;
 }
 .abilityDiv > div {
+  display: flex;
+  flex-direction: column;
+}
+.weaponProfileDiv > div {
+  display: flex;
+  flex-direction: row;
+}
+.abilityDiv > div > div {
   display: flex;
   gap: 15px;
   padding: 5px;
   
 }
-.abilityDiv > span {
-  font-weight: bold;
-}
-.abilityDiv > div > label {
+.abilityDiv > div > div > label {
   font-weight: bold;
   padding-right: 10px;
   width: 70px;
 }
-.abilityDiv > div > span {
+.abilityDiv > div > div > span {
   width: -webkit-fill-available;
 }
-.weaponProfileDiv {
-  flex-direction: row;
-}
-.weaponProfileDiv > div {
+
+.weaponProfileDiv > div > div {
   display: flex;
   gap: 15px;
   padding: 5px;
   flex-direction: column;
 }
-.weaponProfileDiv > span {
-  width: 140px;
-  font-weight: bold;
-}
-.weaponProfileDiv > div > label {
+.weaponProfileDiv > div > div > label {
   font-weight: bold;
   min-width: 30px;
 }
-.weaponProfileDiv > div > span {
+.weaponProfileDiv > div > div > span {
 
   max-width: 150px;
 }
