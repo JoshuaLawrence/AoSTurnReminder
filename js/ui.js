@@ -420,7 +420,7 @@ function createPhaseDiv(phase,abilities){
                 phaseDiv.appendChild(createPhaseDiv(phase.slice(0,1).toUpperCase() + phase.slice(1) +" " +_phase,profiles));
         });
         
-    }else if(phase != "other"){
+    }else {//if(phase != "other"){ display abilities with missing timings in own div at end
 
         header.appendChild(title); 
         let _abilities = abilities;
@@ -441,9 +441,9 @@ function createPhaseDiv(phase,abilities){
             })
         }
 
-    }else{  
+    }/*else{  
         console.log(phase,abilities);
-    }
+    }*/
     while(phase.includes("_")){
         let i = phase.indexOf("_");
         phase = phase.slice(0,i) + " " + phase.slice(i+1,i+2).toUpperCase() + phase.slice(i+2);
