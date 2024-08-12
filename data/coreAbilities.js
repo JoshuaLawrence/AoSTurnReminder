@@ -23,7 +23,7 @@ let coreAbilities = [
     },
     {
         chars:{
-            Timing:"",
+            Timing:"Enemy Movement Phase",
             Declare:"Pick a friendly unit that is not in combat to use this ability",
             Cost:"1",
             Effect:"Each model in that unit can move up to D6\" at move **cannot** pass through or end within the combat range of an enemy unit.",
@@ -56,7 +56,7 @@ let coreAbilities = [
     },
     {
         chars:{
-            Timing:"",
+            Timing:"Enemy Charge Phase",
             Declare:"Pick a friendly unit that is **not in combat** to use this ability.",
             Cost:"2",
             Effect:"That unit can use a **^^Charge^^** ability as if it were your charge phase.",
