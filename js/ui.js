@@ -124,7 +124,67 @@ let coreAbilities = [
         },
         name: "Power Through",
         typeName: "Ability (Command)"
-    }
+    },
+    {
+        chars:{
+            Declare:"Pick a friendly unit that is **not in combat** to use this ability.",
+            Effect:"That unit can move a distance up to its **Move** characteristic. That unit **cannot** move into combat during any part of that move.",
+            Keywords:"**^^Core^^**, **^^Move^^**",
+            Timing:"Your Movement Phase",
+        },
+        name: "Normal Move",
+        typeName: "Ability (Activated)"
+    },
+    {
+        chars:{
+            Declare:"Pick a friendly unit that is **not in combat** to use this ability.",
+            Effect:"Make a **run roll** of D6. That unit can move a distance up to its **Move** characteristic added to the **run roll**. That unit cannot move into combat during any part of that move.",
+            Keywords:"**^^Core^^**, **^^Move^^**, **^^Run^^**",
+            Timing:"Your Movement Phase",
+        },
+        name: "Run",
+        typeName: "Ability (Activated)"
+    },
+    {
+        chars:{
+            Declare:"Pick a friendly unit that is **in combat** to use this ability.",
+            Effect:"Inflict **D3 mortal damage** on that unit. That unit can move a distance up to its **Move** characteristic. That unit **can** move through the combat ranges of any enemy units but cannot end that move within an enemy unit’s combat range.",
+            Keywords:"**^^Core^^**, **^^Move^^**, **^^Retreat^^**",
+            Timing:"Your Movement Phase",
+        },
+        name: "Retreat",
+        typeName: "Ability (Activated)"
+    },
+    {
+        chars:{
+            Declare:": Pick a friendly unit that has not used a **^^Run^^** or **^^Retreat^^** ability this turn to use this ability. Then, pick one or more enemy units as the target(s) of that unit’s attacks (see 16.0).",
+            Effect:"Resolve **shooting attacks** against the target unit(s).",
+            Keywords:"**^^Core^^**, **^^Attack^^**, **^^Shoot^^**",
+            Timing:"Your Shooting Phase",
+        },
+        name: "Shoot",
+        typeName: "Ability (Activated)"
+    },
+    {
+        chars:{
+            Declare:"Pick a friendly unit that is not in combat and has not used a **^^Run^^** or **^^Retreat^^** ability this turn to use this ability. Then, make a **charge roll** of 2D6.",
+            Effect:"That unit can move a distance up to the value of the **charge roll**. That unit **can** move through the combat ranges of any enemy units and must end that move within ½\" of a visible enemy unit. If it does so, the unit using this ability has **charged**.",
+            Keywords:"**^^Core^^**, **^^Move^^**, **^^Charge^^**",
+            Timing:"Your Charge Phase",
+        },
+        name: "Charge",
+        typeName: "Ability (Activated)"
+    },
+    {
+        chars:{
+            Declare:"Pick a friendly unit that is **in combat** or that **charged** this turn to use this ability. That unit can make a **pile-in move** (see 15.4). Then, if that unit is **in combat**, you must pick one or more enemy units as the target(s) of that unit’s attacks (see 16.0).",
+            Effect:"Resolve **combat attacks** against the target unit(s).",
+            Keywords:"**^^Core^^**, **^^Attack^^**, **^^Fight^^**",
+            Timing:"Your Combat Phase",
+        },
+        name: "Fight",
+        typeName: "Ability (Activated)"
+    },
 ];
 
 document.addEventListener("DOMContentLoaded", init);
