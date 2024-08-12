@@ -497,7 +497,6 @@ function createAbilityDiv(ability){
 }
 
 function createAbilityCharDiv(char,val){
-    console.log(char,val)
     let div = document.createElement("div")
     let span = document.createElement("span");
     let label = document.createElement("label");
