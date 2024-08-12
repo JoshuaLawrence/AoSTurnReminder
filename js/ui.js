@@ -706,6 +706,7 @@ function createAbilityCharDiv(char,val){
     label.innerHTML = char;
     //do any keyword "bolding"
     while(val.includes("**^^")){
+        val = val.slice(0,val.indexOf("**^^")) + val.slice(val.indexOf("**^^"),val.indexOf("^^**")).toUpperCase() + val.slice(val.indexOf("^^**"))
         val = val.replace("**^^","<b>");
         val = val.replace("^^**","</b>");
     }
