@@ -237,7 +237,11 @@ function sortAbilitiesByPhase(list){
         console.log("already sorted",list.phases);
         //return;
     }
-     //sort abilities by phase
+    //take abilities from the list
+    let abilities = Object.values(list.abilities);
+    //add core abilities to the abilities list
+    abilities.push.apply(abilities,coreAbilities);
+    //sort abilities by phase
     let phases = {
         deployment:[],
         start_of_battle_round:[],
@@ -272,7 +276,7 @@ function sortAbilitiesByPhase(list){
         }
     }
 
-    Object.values(list.abilities).forEach(ability=>{
+    abilities.forEach(ability=>{
         if(ability.typeName.includes("(Passive)")){
             phases.passive.push(ability);
             return;
