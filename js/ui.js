@@ -133,7 +133,7 @@ let coreAbilities = [
             Timing:"Your Movement Phase",
         },
         name: "Normal Move",
-        typeName: "Ability (Activated)"
+        typeName: "Ability (Core)"
     },
     {
         chars:{
@@ -143,7 +143,7 @@ let coreAbilities = [
             Timing:"Your Movement Phase",
         },
         name: "Run",
-        typeName: "Ability (Activated)"
+        typeName: "Ability (Core)"
     },
     {
         chars:{
@@ -153,7 +153,7 @@ let coreAbilities = [
             Timing:"Your Movement Phase",
         },
         name: "Retreat",
-        typeName: "Ability (Activated)"
+        typeName: "Ability (Core)"
     },
     {
         chars:{
@@ -163,7 +163,7 @@ let coreAbilities = [
             Timing:"Your Shooting Phase",
         },
         name: "Shoot",
-        typeName: "Ability (Activated)"
+        typeName: "Ability (Core)"
     },
     {
         chars:{
@@ -173,7 +173,7 @@ let coreAbilities = [
             Timing:"Your Charge Phase",
         },
         name: "Charge",
-        typeName: "Ability (Activated)"
+        typeName: "Ability (Core)"
     },
     {
         chars:{
@@ -183,7 +183,37 @@ let coreAbilities = [
             Timing:"Your Combat Phase",
         },
         name: "Fight",
-        typeName: "Ability (Activated)"
+        typeName: "Ability (Core)"
+    },
+    {
+        chars:{
+            Declare:"Pick a **unit** from your army roster that has not been **deployed** to be the target.",
+            Effect:"Set up the target unit wholly within friendly territory and more than 9\" from enemy territory. After you have done so, it has been **deployed**.",
+            Keywords:"**^^Deploy^^**",
+            Timing:"Deployment Phase",
+        },
+        name: "Deploy Unit",
+        typeName: ""
+    },
+    {
+        chars:{
+            Declare:"Pick a friendly **faction terrain feature** that has not been **deployed** to be the target.",
+            Effect:"Set up the target faction terrain feature wholly within friendly territory, more than 3\" from all objectives and other terrain features. After you have done so, it has been **deployed**.",
+            Keywords:"**^^Deploy Terrain^^**",
+            Timing:"Deployment Phase",
+        },
+        name: "Deploy Faction Terrain",
+        typeName: ""
+    },
+    {
+        chars:{
+            Declare:"Pick a **regiment** from your army roster to be the target. No units in that regiment can have already been **deployed**.",
+            Effect:"Keep using **^^Deploy^^** abilities without alternating until all units in that regiment have been **deployed**. You cannot pick units that are not in that regiment as the target of any of those **^^Deploy^^** abilities.",
+            Keywords:"**^^Deploy^^**",
+            Timing:"Deployment Phase",
+        },
+        name: "Deploy Regiment",
+        typeName: ""
     },
 ];
 
