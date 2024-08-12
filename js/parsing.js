@@ -233,7 +233,7 @@ function parseAbility(profile){
     return ability;
 }
 function sortAbilitiesByPhase(list){
-    if(list.phases){
+    if(list.phases && false){
         console.log("already sorted",list.phases);
         //return;
     }
@@ -246,33 +246,33 @@ function sortAbilitiesByPhase(list){
         deployment:[],
         start_of_battle_round:[],
         your:{
-            Hero:{Passive:[],Abilities:[]},
-            Movement:{Passive:[],Abilities:[]},
-            Shooting:{Passive:[],Abilities:[],Weapons:[]},
-            Charge:{Passive:[],Abilities:[]},
-            Combat:{Passive:[],Abilities:[],Weapons:[]},
-            EndOfTurn:{Passive:[],Abilities:[]},
-            other:{Passive:[],Abilities:[]},
+            Hero:{Passive:[],Abilities:[],Reactions:[]},
+            Movement:{Passive:[],Abilities:[],Reactions:[]},
+            Shooting:{Passive:[],Abilities:[],Weapons:[],Reactions:[]},
+            Charge:{Passive:[],Abilities:[],Reactions:[]},
+            Combat:{Passive:[],Abilities:[],Weapons:[],Reactions:[]},
+            EndOfTurn:{Passive:[],Abilities:[],Reactions:[]},
+            other:{Passive:[],Abilities:[],Reactions:[]},
         },
         enemy:{
-            Hero:{Passive:[],Abilities:[]},
-            Movement:{Passive:[],Abilities:[]},
-            Shooting:{Passive:[],Abilities:[],Weapons:[]},
-            Charge:{Passive:[],Abilities:[]},
-            Combat:{Passive:[],Abilities:[],Weapons:[]},
-            EndOfTurn:{Passive:[],Abilities:[]},
-            other:{Passive:[],Abilities:[]},
+            Hero:{Passive:[],Abilities:[],Reactions:[]},
+            Movement:{Passive:[],Abilities:[],Reactions:[]},
+            Shooting:{Passive:[],Abilities:[],Weapons:[],Reactions:[]},
+            Charge:{Passive:[],Abilities:[],Reactions:[]},
+            Combat:{Passive:[],Abilities:[],Weapons:[],Reactions:[]},
+            EndOfTurn:{Passive:[],Abilities:[],Reactions:[]},
+            other:{Passive:[],Abilities:[],Reactions:[]},
         },
         passive:[],
         reaction:[],
         other:{
-            Hero:{Passive:[],Abilities:[]},
-            Movement:{Passive:[],Abilities:[]},
-            Shooting:{Passive:[],Abilities:[],Weapons:[]},
-            Charge:{Passive:[],Abilities:[]},
-            Combat:{Passive:[],Abilities:[],Weapons:[]},
-            EndOfTurn:{Passive:[],Abilities:[]},
-            other:{Passive:[],Abilities:[]},
+            Hero:{Passive:[],Abilities:[],Reactions:[]},
+            Movement:{Passive:[],Abilities:[],Reactions:[]},
+            Shooting:{Passive:[],Abilities:[],Weapons:[],Reactions:[]},
+            Charge:{Passive:[],Abilities:[],Reactions:[]},
+            Combat:{Passive:[],Abilities:[],Weapons:[],Reactions:[]},
+            EndOfTurn:{Passive:[],Abilities:[],Reactions:[]},
+            other:{Passive:[],Abilities:[],Reactions:[]},
         }
     }
 
@@ -300,7 +300,30 @@ function sortAbilitiesByPhase(list){
             return;
         }
         if(ability.chars?.Timing?.includes("Reaction")){
-            phases.reaction.push(ability)
+            let addedToPhase = false;
+            if(ability.chars.Timing.includes("Shoot") || ability.chars.Timing.includes("Attack")){
+                phases.your.Shooting.Reactions.push(ability);
+                phases.enemy.Shooting.Reactions.push(ability);
+                addedToPhase = true;
+            }
+            if(ability.chars.Timing.includes("Attack")){
+                phases.your.Combat.Reactions.push(ability);
+                phases.enemy.Combat.Reactions.push(ability);
+                addedToPhase = true;
+            }
+            if(ability.chars.Timing.includes("Charge")){
+                phases.your.Charge.Reactions.push(ability);
+                phases.enemy.Charge.Reactions.push(ability);
+                addedToPhase = true;
+            }
+            if(ability.chars.Timing.includes("Run")){
+                phases.your.Movement.Reactions.push(ability);
+                addedToPhase = true;
+            }
+            //if not added to any specific phase, then add to general reactions for later debug
+            if(!addedToPhase || true){
+                phases.reaction.push(ability);
+            }
             return;
         }
 
