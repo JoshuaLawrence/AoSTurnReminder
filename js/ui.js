@@ -152,13 +152,16 @@ function nrParse(importListRaw){
             importList["battleFormation"] = row.split(":")[1].trim();
         }
         else if(row.includes("Manifestation Lore")){
-            importList["manifestationLore"] = row.split(":")[1].trim();
+            let manifestationLore = row.split(":")[1].trim();
+            importList["manifestationLore"] = {name:manifestationLore,abilities:[]};
         }
         else if(row.includes("Prayer Lore")){
-            importList["prayerLore"] = row.split(":")[1].trim();
+            let prayerLore = row.split(":")[1].trim();
+            importList["prayerLore"] = {name:prayerLore,abilities:[]};
         }
         else if(row.includes("Spell Lore")){
-            importList["spellLore"] = row.split(":")[1].trim();
+            let spellLore = row.split(":")[1].trim();
+            importList["spellLore"] = {name:spellLore,abilities:[]};
         }
         else if(row.includes("FACTION TERRAIN")){
             row = importListRaw[++i];
