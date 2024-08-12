@@ -49,7 +49,7 @@ let coreAbilities = [
             Declare:"Pick a friendly unit that is **not in combat** to use this ability.",
             Cost:"1",
             Effect:"Resolve **shooting attacks** for that unit, but all of the attacks must target the **nearest visible enemy** unit and you must subtract 1 from the **hit rolls** for those attacks.",
-            Keywords:"",
+            Keywords:"**^^Shoot^^**, **^^Attack^^**",
         },
         name: "Covering Fire",
         typeName: "Ability (Command)"
