@@ -442,11 +442,7 @@ function createPhaseDiv(phase,abilities){
         }
 
     }else{  
-        
-        Object.entries(abilities).forEach(([_phase,_abilities])=>{
-            if(_abilities.length)console.log(phase+"_"+_phase,_abilities);
-        })
-        //console.log(phase,abilities);
+        console.log(phase,abilities);
     }
     while(phase.includes("_")){
         let i = phase.indexOf("_");

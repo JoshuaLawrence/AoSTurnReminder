@@ -265,15 +265,7 @@ function sortAbilitiesByPhase(list){
         },
         passive:[],
         reaction:[],
-        other:{
-            Hero:{Passive:[],Abilities:[],Reactions:[]},
-            Movement:{Passive:[],Abilities:[],Reactions:[]},
-            Shooting:{Passive:[],Abilities:[],Weapons:[],Reactions:[]},
-            Charge:{Passive:[],Abilities:[],Reactions:[]},
-            Combat:{Passive:[],Abilities:[],Weapons:[],Reactions:[]},
-            EndOfTurn:{Passive:[],Abilities:[],Reactions:[]},
-            other:{Passive:[],Abilities:[],Reactions:[]},
-        }
+        other:[]
     }
 
     abilities.forEach(ability=>{
@@ -356,7 +348,10 @@ function sortAbilitiesByPhase(list){
             phase = "other";
         }
 
-        if(turn != "any"){
+        if(phase == "other"){
+            phases[phase].push(ability);//.id;
+        }
+        else if(turn != "any"){
             phases[turn][phase].Abilities.push(ability);//.id;
         }else{
             
