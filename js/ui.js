@@ -119,7 +119,7 @@ let coreAbilities = [
             Timing:"End of Any Turn",
             Declare:"Pick a friendly unit that charged this turn to use this ability, then you must pick an enemy unit in combat with it to be the target. The target must have a lower **Health** characteristic than the unit using this ability.",
             Cost:"1",
-            Effect:": Inflict **D3 mortal damage** on the target. Then, the unit using this ability can move a distance up to its **Move** characteristic. It can pass through and end that move within the combat ranges of enemy units that were in combat with it at the start of the move, but not those of other enemy units. It does not have to end the move in combat",
+            Effect:"Inflict **D3 mortal damage** on the target. Then, the unit using this ability can move a distance up to its **Move** characteristic. It can pass through and end that move within the combat ranges of enemy units that were in combat with it at the start of the move, but not those of other enemy units. It does not have to end the move in combat",
             Keywords:"**^^Move^^**",
         },
         name: "Power Through",
@@ -158,7 +158,7 @@ let coreAbilities = [
     {
         chars:{
             Timing:"Your Shooting Phase",
-            Declare:": Pick a friendly unit that has not used a **^^Run^^** or **^^Retreat^^** ability this turn to use this ability. Then, pick one or more enemy units as the target(s) of that unit’s attacks (see 16.0).",
+            Declare:"Pick a friendly unit that has not used a **^^Run^^** or **^^Retreat^^** ability this turn to use this ability. Then, pick one or more enemy units as the target(s) of that unit’s attacks (see 16.0).",
             Effect:"Resolve **shooting attacks** against the target unit(s).",
             Keywords:"**^^Core^^**, **^^Attack^^**, **^^Shoot^^**",
         },
