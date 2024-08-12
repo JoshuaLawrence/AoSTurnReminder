@@ -238,7 +238,7 @@ function sortAbilitiesByPhase(list){
         //return;
     }
      //sort abilities by phase
-     let phases = {
+    let phases = {
         deployment:[],
         start_of_battle_round:[],
         your:{
