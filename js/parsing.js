@@ -3,6 +3,7 @@ function linkListData(list){
     //console.log(list);
     let _data = data[list.faction];
     list.abilities = {};
+    list.parseErrors = [];
     //battle traits
     let battleTraitProfiles = _data.rules.querySelectorAll("sharedSelectionEntries selectionEntry profiles profile");
     //console.log(battleTraitProfiles);
@@ -100,7 +101,6 @@ function linkListData(list){
         if(!_unit){
 
             let msg = "Could not find data for "+((unit?.type == "manifestation")?("Manifestation"):("Unit"))+": [" + unit.unitName + "]";
-            if(!list.parseErrors)list.parseErrors = [];
             list.parseErrors.push({msg,'str':unit.unitName})
             console.log(msg);
             return;
