@@ -508,6 +508,10 @@ function createAbilityCharDiv(char,val){
         val = val.replace("**^^","<b>");
         val = val.replace("^^**","</b>");
     }
+    while(val.includes("^^")){
+        val = val.replace("^^","<b>");
+        val = val.replace("^^","</b>");
+    }
     //do listing
     while(val.includes("**")){
         val = val.replace("**","<b>");
