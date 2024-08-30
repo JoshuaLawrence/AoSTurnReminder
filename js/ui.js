@@ -387,12 +387,12 @@ function displayAbilities(list){
     console.log("Displaying List: " + list.armyName);
     //should be all sorted and ready to display the Turn reminder
     Object.entries(list.phases).forEach(([phase,abilities])=>{
-        let div = createPhaseDiv(phase,abilities);
+        let div = createPhaseDiv(phase,abilities,list);
         phaseView.appendChild(div);
     })
 }
 
-function createPhaseDiv(phase,abilities){
+function createPhaseDiv(phase,abilities,list){
     //console.log(phase,abilities)
     let phaseDiv = document.createElement("div");
     let header = document.createElement("div");
@@ -428,14 +428,14 @@ function createPhaseDiv(phase,abilities){
             _abilities = abilities.Abilities;
         }
         _abilities.forEach(ability=>{
-            let abilityDiv = createAbilityDiv(ability);
+            let abilityDiv = createAbilityDiv(ability,list);
             if(abilityDiv)
                 body.appendChild(abilityDiv);
         })
         let _weapons = abilities.Weapons;
         if(_weapons != undefined){
             _weapons.forEach(weapon=>{
-                let weaponDiv = createAbilityDiv(weapon);
+                let weaponDiv = createAbilityDiv(weapon,list);
                 if(weaponDiv)
                     body.appendChild(weaponDiv);
             })
@@ -456,7 +456,7 @@ function createPhaseDiv(phase,abilities){
     return phaseDiv;
 }
 
-function createAbilityDiv(ability){
+function createAbilityDiv(ability,list){
     let abilityDiv = document.createElement("div");
     let abTitle = document.createElement("span");
     abTitle.innerHTML = ability.name + " - " + ability.typeName;
@@ -473,7 +473,7 @@ function createAbilityDiv(ability){
     }
 
     Object.entries(ability.chars).forEach(([key,value])=>{
-        let div = createAbilityCharDiv(key,value);
+        let div = createAbilityCharDiv(key,value,ability,list);
         containerDiv.appendChild(div);
     });
     let unitsDiv = document.createElement("div");
@@ -497,7 +497,7 @@ function createAbilityDiv(ability){
     return abilityDiv;
 }
 
-function createAbilityCharDiv(char,val){
+function createAbilityCharDiv(char,val,ability,list){
     let div = document.createElement("div")
     let span = document.createElement("span");
     let label = document.createElement("label");
@@ -526,13 +526,29 @@ function createAbilityCharDiv(char,val){
     while(val.includes("\n")){//
         val = val.replace("\n","<br>");
     }
-    
-    span.innerHTML=val;
+
     div.appendChild(label);
-    div.appendChild(span);
+    //manual timing input
+    if(char == "Timing" && val == ""){
+        let input = document.createElement("input");
+        input.placeholder = "Type manual timing text here";
+        input.title = "Type the exact Timing from the relevant warscroll.";
+        if(list?.manualTiming?.[ability.id] != ""){
+            input.value = list.manualTiming[ability.id];
+        }
+
+        div.appendChild(input);
+    }else{
+        if(char == "Timing")console.log(val);
+        span.innerHTML=val;
+        div.appendChild(span);
+    }
+    
     return div;
 }
-
+var timingOptions = [
+    "Start"
+];
 
 function removeSelectedList(listIdx = null){
     if(!listIdx){

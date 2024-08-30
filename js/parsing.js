@@ -11,7 +11,7 @@ function linkListData(list){
         let name = profile.attributes.name.value;
         let id = profile.attributes.id.value;
         if(!list.abilities[id]){
-            list.abilities[id] = parseAbility(profile);
+            list.abilities[id] = parseAbility(profile,list);
         }
         //lookup keywords in ability effect and add units with those keywords to the ability - first requires storing each unit's keywords
     });
@@ -119,7 +119,7 @@ function linkListData(list){
                     let id = profile.attributes.id.value;
                     if(!list.abilities[id]){
                 
-                        list.abilities[id] = parseAbility(profile);
+                        list.abilities[id] = parseAbility(profile,list);
                         //console.log(list.abilities[id])
                     }
                     list.abilities[id].units.push(unit_idx);
@@ -199,7 +199,7 @@ function parseProfiles(list,xmlData,unit_idx = null,unit = null,wargear = false)
        
         if(!list.abilities[id]){
            
-            list.abilities[id] = parseAbility(profile);
+            list.abilities[id] = parseAbility(profile,list);
         }
         if(unit_idx !== null && unit){
             list.abilities[id].units.push(unit_idx);
@@ -209,7 +209,7 @@ function parseProfiles(list,xmlData,unit_idx = null,unit = null,wargear = false)
     })
 }
 
-function parseAbility(profile){
+function parseAbility(profile,list){
     let name = profile.attributes.name.value;
     let id = profile.attributes.id.value;
     let typeId = profile.attributes.typeId.value;
@@ -230,6 +230,16 @@ function parseAbility(profile){
 
         ability.chars[charName]= value;
     }
+    if(!ability.typeName.includes("Weapon") && ability.chars.Timing == ""){
+        ability.manualTiming = "";
+        if(!list.manualTiming) list.manualTiming = {};
+        //if manual timing for this ability isn't already tracked, setup here
+        if(!list.manualTiming[id]){
+            list.manualTiming[id]="";
+        }
+
+    }
+    
     return ability;
 }
 function sortAbilitiesByPhase(list){
