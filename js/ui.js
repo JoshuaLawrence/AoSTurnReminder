@@ -15,6 +15,8 @@ const DEBUG = {
 
 };
 
+var displayListIndex = -1;
+
 document.addEventListener("DOMContentLoaded", init);
 
 async function init(){
@@ -114,7 +116,6 @@ function parseImportText(){
     //console.log("importListRaw",importListRaw);
     let importList = null;
     if(importListRaw[0].split("-").length > 1){
-        console.log(importListRaw)
         importList = nrParse(importListRaw);
     }else{
         importList = gwParse(importListRaw);
@@ -215,6 +216,16 @@ function nrParse(importListRaw){
         }
 
     }
+
+    //check for existing list to keep the manualTimings if they exist
+    let existingListIndex = parsedData["Lists"].findIndex((list) => list.armyName == importList.armyName);
+    if(existingListIndex >= 0){
+        //console.log("copying over manual timings for " + importList.armyName)
+        if(parsedData["Lists"][existingListIndex]?.manualTiming){
+            importList.manualTiming = parsedData["Lists"][existingListIndex].manualTiming;
+        }
+    }
+
     updateListStorage(importList);
     return importList;
 }
@@ -316,7 +327,14 @@ function gwParse(importListRaw){
             }
         }
     }
-   
+    //check for existing list to keep the manualTimings if they exist
+    let existingListIndex = parsedData["Lists"].findIndex((list) => list.armyName == importList.armyName);
+    if(existingListIndex >= 0){
+        //console.log("copying over manual timings for " + importList.armyName)
+        if(parsedData["Lists"][existingListIndex]?.manualTiming){
+            importList.manualTiming = parsedData["Lists"][existingListIndex].manualTiming;
+        }
+    }
     //store the list(s) in local storage
     updateListStorage(importList);
     //console.log("importList",importList);
@@ -354,6 +372,7 @@ function loadList(listIdx = null){
     if(listIdx){
         let list = parsedData["Lists"][listIdx];
         selectedList = list;
+        displayListIndex = listIdx;
     }//otherwise refresh list
     document.getElementById("ListImport").value = "";
     displayParseErrors(selectedList);
@@ -392,7 +411,7 @@ function displayAbilities(list){
     })
 }
 
-function createPhaseDiv(phase,abilities,list){
+function createPhaseDiv(phase,abilities){
     //console.log(phase,abilities)
     let phaseDiv = document.createElement("div");
     let header = document.createElement("div");
@@ -428,14 +447,14 @@ function createPhaseDiv(phase,abilities,list){
             _abilities = abilities.Abilities;
         }
         _abilities.forEach(ability=>{
-            let abilityDiv = createAbilityDiv(ability,list);
+            let abilityDiv = createAbilityDiv(ability);
             if(abilityDiv)
                 body.appendChild(abilityDiv);
         })
         let _weapons = abilities.Weapons;
         if(_weapons != undefined){
             _weapons.forEach(weapon=>{
-                let weaponDiv = createAbilityDiv(weapon,list);
+                let weaponDiv = createAbilityDiv(weapon);
                 if(weaponDiv)
                     body.appendChild(weaponDiv);
             })
@@ -456,7 +475,7 @@ function createPhaseDiv(phase,abilities,list){
     return phaseDiv;
 }
 
-function createAbilityDiv(ability,list){
+function createAbilityDiv(ability){
     let abilityDiv = document.createElement("div");
     let abTitle = document.createElement("span");
     abTitle.innerHTML = ability.name + " - " + ability.typeName;
@@ -473,7 +492,7 @@ function createAbilityDiv(ability,list){
     }
 
     Object.entries(ability.chars).forEach(([key,value])=>{
-        let div = createAbilityCharDiv(key,value,ability,list);
+        let div = createAbilityCharDiv(key,value,ability);
         containerDiv.appendChild(div);
     });
     let unitsDiv = document.createElement("div");
@@ -497,7 +516,7 @@ function createAbilityDiv(ability,list){
     return abilityDiv;
 }
 
-function createAbilityCharDiv(char,val,ability,list){
+function createAbilityCharDiv(char,val,ability){
     let div = document.createElement("div")
     let span = document.createElement("span");
     let label = document.createElement("label");
@@ -529,26 +548,34 @@ function createAbilityCharDiv(char,val,ability,list){
 
     div.appendChild(label);
     //manual timing input
-    if(char == "Timing" && val == ""){
+    if(char == "Timing" && val == "" ){
         let input = document.createElement("input");
         input.placeholder = "Type manual timing text here";
         input.title = "Type the exact Timing from the relevant warscroll.";
-        if(list?.manualTiming?.[ability.id] != ""){
-            input.value = list.manualTiming[ability.id];
-        }
 
+        let list = parsedData['Lists'][displayListIndex];
+        let manualTiming = list?.manualTiming?.[ability.id];
+
+        if(manualTiming != "" || manualTiming != undefined){
+            input.value = manualTiming;
+        }
+        input.addEventListener("keydown",(event)=>{if(event.key == "Enter"){
+            input.blur();
+        }});
+        input.addEventListener("blur",()=>{saveManualTiming(list,ability.id,input.value)});
         div.appendChild(input);
     }else{
-        if(char == "Timing")console.log(val);
         span.innerHTML=val;
         div.appendChild(span);
     }
     
     return div;
 }
-var timingOptions = [
-    "Start"
-];
+
+function saveManualTiming(list,abilityID,manualTiming){
+    list.manualTiming[abilityID] = manualTiming;
+    updateListStorage(list);
+}
 
 function removeSelectedList(listIdx = null){
     if(!listIdx){

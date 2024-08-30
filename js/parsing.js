@@ -283,14 +283,7 @@ function sortAbilitiesByPhase(list){
             phases.passive.push(ability);
             return;
         }
-        if(ability.chars?.Timing?.includes("Deployment Phase")){
-            phases.deployment.push(ability);
-            return;
-        }
-        if(ability.chars?.Timing?.includes("Start") && ability.chars?.Timing?.includes("Battle Round")){
-            phases.start_of_battle_round.push(ability);
-            return;
-        }
+
         if(ability.typeName.includes("Melee Weapon")){
             phases.your.Combat.Weapons.push(ability);//.id;
             phases.enemy.Combat.Weapons.push(ability);//.id;
@@ -301,24 +294,44 @@ function sortAbilitiesByPhase(list){
             phases.enemy.Shooting.Weapons.push(ability);//.id;
             return;
         }
-        if(ability.chars?.Timing?.includes("Reaction")){
+
+        let timing = ability.chars?.Timing;
+        //check manual timing
+        if(timing == "" && list?.manualTiming){
+            let manualTiming = list?.manualTiming?.[ability.id]
+            if(manualTiming != undefined || manualTiming != ''){
+                timing = list?.manualTiming?.[ability.id];
+            }
+                
+        }
+        
+        if(timing.includes("Deployment Phase")){
+            phases.deployment.push(ability);
+            return;
+        }
+        if(timing.includes("Start") && timing.includes("Battle Round")){
+            phases.start_of_battle_round.push(ability);
+            return;
+        }
+
+        if(timing.includes("Reaction")){
             let addedToPhase = false;
-            if(ability.chars.Timing.includes("Shoot") || ability.chars.Timing.includes("Attack")){
+            if(timing.includes("Shoot") || ability.chars.Timing.includes("Attack")){
                 phases.your.Shooting.Reactions.push(ability);
                 phases.enemy.Shooting.Reactions.push(ability);
                 addedToPhase = true;
             }
-            if(ability.chars.Timing.includes("Attack")){
+            if(timing.includes("Attack")){
                 phases.your.Combat.Reactions.push(ability);
                 phases.enemy.Combat.Reactions.push(ability);
                 addedToPhase = true;
             }
-            if(ability.chars.Timing.includes("Charge")){
+            if(timing.includes("Charge")){
                 phases.your.Charge.Reactions.push(ability);
                 phases.enemy.Charge.Reactions.push(ability);
                 addedToPhase = true;
             }
-            if(ability.chars.Timing.includes("Run")){
+            if(timing.includes("Run")){
                 phases.your.Movement.Reactions.push(ability);
                 addedToPhase = true;
             }
@@ -332,27 +345,27 @@ function sortAbilitiesByPhase(list){
 
         let turn = "";
         let phase = "";
-        if(ability.chars?.Timing?.includes("Your")){
+        if(timing.includes("Your")){
             turn = "your";
-        }else if(ability.chars?.Timing?.includes("Enemy")){
+        }else if(timing.includes("Enemy")){
             turn = "enemy";
-        }else if(ability.chars?.Timing?.includes("Any")){
+        }else if(timing.includes("Any")){
             turn = "any";
         }else{
             turn = "other";
         }
 
-        if(ability.chars?.Timing?.includes("End") && ability.chars?.Timing?.includes("Turn")){
+        if(timing.includes("End") && timing.includes("Turn")){
             phase = "EndOfTurn";
-        }else if(ability.chars?.Timing?.includes("Hero")){
+        }else if(timing.includes("Hero")){
             phase = "Hero";
-        }else if(ability.chars?.Timing?.includes("Movement")){
+        }else if(timing.includes("Movement")){
             phase = "Movement";
-        }else if(ability.chars?.Timing?.includes("Shooting")){
+        }else if(timing.includes("Shooting")){
             phase = "Shooting";
-        }else if(ability.chars?.Timing?.includes("Charge")){
+        }else if(timing.includes("Charge")){
             phase = "Charge";
-        }else if(ability.chars?.Timing?.includes("Combat")){
+        }else if(timing.includes("Combat")){
             phase = "Combat";
         }else{
             phase = "other";
